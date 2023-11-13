@@ -1,5 +1,5 @@
 import { Layout } from "antd";
-import { SearchComponent } from "../../components";
+import { PlaybarComponent, SearchComponent } from "../../components";
 export default function FeedPage() {
   const { Header, Content, Footer, Sider } = Layout;
   return (
@@ -10,7 +10,9 @@ export default function FeedPage() {
           <SearchComponent />
         </Header>
         <Content>content</Content>
-        <Footer></Footer>
+        <Footer>
+          <PlaybarComponent />
+        </Footer>
       </Layout>
       <Sider></Sider>
     </Layout>
