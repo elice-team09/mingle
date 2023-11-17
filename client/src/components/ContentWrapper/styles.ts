@@ -7,4 +7,7 @@ export const Wrapper = styled.div`
     margin: 0 auto;
     padding: 16px;
     overflow-y: scroll;
+    &::-webkit-scrollbar {
+        display: none;
+    }
 `;
