@@ -132,6 +132,3 @@ export const StyledAdditionalButton = styled.div`
     hover:text-gray-300
   `}
 `;
-
-// ... (다른 스타일들 생략)
-

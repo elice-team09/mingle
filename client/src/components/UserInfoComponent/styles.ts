@@ -2,7 +2,7 @@
 import tw, {styled} from "twin.macro";
 
 
-export const UserInfo = styled.div`
+export const StyledUserInfo = styled.div`
     ${tw`
     flex
     items-center
@@ -10,40 +10,44 @@ export const UserInfo = styled.div`
     bg-[#e0e0e0]
     flex-wrap
     justify-between	
-    border-b-2
-    border-zinc-500
+    
     `}
 `
 
 
 
-export const UserImageContainer = styled.div`
+export const StyledUserImageContainer = styled.div`
 ${tw`
      
 `}
 `
-
-export const UserImage = styled.img`
+    
+export const StyledUserImage = styled.img`
  ${tw`
     rounded-full
     w-20
+    mt-1
  `}
 `
     
-export const UserDescript = styled.div`
+export const StyledUserDescript = styled.div`
 ${tw`
-    // flex
     flex-col
     ml-4
     gap-3
     flex
     mt-3
 `}
+    h2{
+        ${tw`
+        font-bold
+        text-2xl
+        `}
+    }
   
   input{
     ${tw`
         fixed
-    
         border
         rounded-md
     `}
@@ -51,25 +55,27 @@ ${tw`
 `
 
 
-export const UserSubInfo = styled.div`
+export const StyledUserSubInfo = styled.div`
   ${tw`
     flex
+    ml-6
   `}
 `
 
-export const UserStatus = styled.div`
+export const StyledUserStatus = styled.div`
 ${tw`
     p-4
     flex
-    // ml-auto
+    ml-auto
     mt-10
+    
     `}
     `
 
 
 
 
-export const PostCount = styled.div`
+export const StyledPostCount = styled.div`
 ${tw`
     p-4
     flex
@@ -82,7 +88,7 @@ ${tw`
 
 
 
-export const Follower = styled.div`
+export const StyledFollower = styled.div`
 ${tw`
     p-4
     flex
@@ -94,7 +100,7 @@ ${tw`
 
 
 
-export const Following = styled.div`
+export const StyledFollowing = styled.div`
 ${tw`
     p-4
     flex
@@ -102,4 +108,9 @@ ${tw`
     p{
         margin-right: 4px;
     }
+`
+export const StyledDivider = styled.div`
+    ${tw`ml-[70px] h-[1px]`}
+    width: 90%;
+    border: 1px solid #ccc;
 `
