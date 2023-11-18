@@ -11,7 +11,7 @@ export default function ChartPage() {
   return (
     <>
       <SearchComponent />
-      <SideBarComponent />
+      <SideBarComponent userIcon={'/img/User-Icon.png'} />
       <ContentWrapper>
         <ChartComponent
           items={[

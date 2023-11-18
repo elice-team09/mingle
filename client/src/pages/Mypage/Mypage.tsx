@@ -11,7 +11,7 @@ export default function Mypage() {
   return (
     <>
       <ContentWrapper>
-        <SideBarComponent />
+      <SideBarComponent userIcon={'/img/User-Icon.png'} />
         <SearchComponent />
         <UserInfoComponent
           userImage={'/img/User-Icon.png'}

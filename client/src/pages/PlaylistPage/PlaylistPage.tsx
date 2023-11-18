@@ -16,7 +16,7 @@ export default function PlaylistPage() {
     <>
       <SearchComponent />
       <ContentWrapper>
-        <SideBarComponent />
+      <SideBarComponent userIcon={'/img/User-Icon.png'} />
         <Content>
           <AlbumArtComponent albumArtSrc="/img/AlbumSample.jpg" />
           <PlaylistContentsComponent

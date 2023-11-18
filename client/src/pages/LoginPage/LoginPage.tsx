@@ -22,7 +22,7 @@ export default function LoginPage() {
   return (
     <>
       <SearchComponent />
-      <SideBarComponent />
+      <SideBarComponent userIcon={'/img/User-Icon.png'} />
       <ContentWrapper>
         <StyledLoginWrapper>
           <AuthComponent type="login" />

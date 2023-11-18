@@ -12,7 +12,7 @@ export default function FeedPage() {
   return (
     <>
       <SearchComponent />
-      <SideBarComponent />
+      <SideBarComponent userIcon={'/img/User-Icon.png'} />
       <ContentWrapper>
         <PlaylistCardComponent
           profileIcon={"/img/User-Icon.png"}
