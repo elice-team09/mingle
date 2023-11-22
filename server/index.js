@@ -1,7 +1,7 @@
 const express = require("express");
 const app = express();
 const path = require("path");
-
+const cors = require("cors");
 app.get("/api", function (req, res) {
   res.send("Melody Link API Server");
 });
@@ -14,6 +14,9 @@ app.use(
 const passport = require("passport"); // Passport 모듈
 const passportConfig = require("./utils/passport/index.js"); // Passport 설정 파일
 app.use(passport.initialize());
+
+// CORS 설정: CORS를 허용함
+app.use(cors());
 
 // Passport 설정: 사용자 로그인 및 인증 전략을 설정
 passportConfig();
