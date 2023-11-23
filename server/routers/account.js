@@ -5,8 +5,6 @@ const accountDelete = require("../services/account/delete");
 const accountEdit = require("../services/account/update");
 const search = require("../utils/commons/search");
 const passport = require("passport");
-const User = require("../db/models/userModel");
-const createFollow = require("../services/account/follow/createFollow");
 const jwt = require("jsonwebtoken");
 const createFollow = require("../services/account/follow/createFollow");
 const viewFollow = require("../services/account/follow/viewFollow");
@@ -164,18 +162,6 @@ router.post("/reset-password", async (req, res, next) => {
   }
 });
 
-router.get("/my-like-playlist", async (req, res, next) => {
-	try {
-		const userId = req.user;
-		const user = await search.UserSearch("UserId", userId);
-		console.log(user);
-		const playlists = await PlayList.find({ _id: user.userLikePlayList });
-		res.status(200).json(playlists);
-	} catch (error) {
-		console.error(error);
-		next(createError(500));
-	}
-});
 router.get(
   "/my-like-playlist",
   passport.authenticate("jwt-user", { session: false }),
@@ -248,41 +234,20 @@ router.delete(
   }
 );
 
-router.get("/follow", async (req, res, next) => {
-	try {
-		const userId = req.user;
-		const user = await search.UserSearch("UserId", userId);
-		console.log(user);
-		res.status(200).json(user.userFollow);
-	} catch (error) {
-		next(error);
-	}
-});
-
-router.post(
-	"/follow/:followUserId",
-	passport.authenticate("jwt-user", { session: false }),
-	async (req, res, next) => {
-		try {
-			const userId = req.user.userId;
-			const followUserId = req.params.followUserId;
-			await createFollow.userFollow(userId, followUserId);
-			res.status(200).json({ message: "팔로우 성공" });
-		} catch (error) {
-			next(error);
-		}
-	}
+// 유저 설명 수정 api
+router.put(
+  "/description",
+  passport.authenticate("jwt-user", { session: false }),
+  async (req, res, next) => {
+    try {
+      const { userId } = req.user;
+      const { userDescription } = req.body;
+      await accountEdit.userDescriptionEdit(userId, userDescription);
+      res.status(200).json({ message: "유저 설명 수정에 성공하였습니다." });
+    } catch (error) {
+      next(error);
+    }
+  }
 );
-
-router.delete("/follow/:followUserId", async (req, res, next) => {
-	try {
-		const userId = req.user;
-		const user = await search.UserSearch("UserId", userId);
-		const followings = await user.find({ _id: user.userFollow });
-		res.status(200).json(followings);
-	} catch (error) {
-		next(error);
-	}
-});
 
 module.exports = router;
