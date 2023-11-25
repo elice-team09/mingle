@@ -15,18 +15,13 @@ import {
   StyledButton
 } from './styles'
 
-interface PlayDescript {
-  description: string
-
-}
-
-interface User {
+interface PlayDescriptAndUser {
   userImg: string
   userName: string
   liked: number
+  description: string
 }
 
-interface PlayDescriptAndUser extends User, PlayDescript {}
 export default function PlaylistDescriptionComponent({
   description,
   userImg,
@@ -45,7 +40,7 @@ export default function PlaylistDescriptionComponent({
     setIsExpand(!isExpand)
   }
 
-  const OverDescription = isExpand ? description : description.slice(0, 20) + '...';
+  const overDescription = isExpand ? description : description.slice(0, 20) + '...';
   return (
     <>
       <StyledDescriptBox>
@@ -83,7 +78,7 @@ export default function PlaylistDescriptionComponent({
         </StyledTop>
 
         <StyledTitle>
-        <StyledOverTitle isExpand={isExpand}>{OverDescription}</StyledOverTitle>
+        <StyledOverTitle isExpand={isExpand}>{overDescription}</StyledOverTitle>
         {description.length > 20  && (
           <>
           <br />
