@@ -46,7 +46,6 @@ async function getSongsByCategory(queryValue, userId, page, pageSize) {
 
   const categorySongs = await Song.find({ songCategory: queryValue })
     .populate("songUploader")
-    .sort({ createdAt: -1 })
     .skip(skip)
     .limit(pageSize);
   const songs = await isUserLikedSong.verifyInSong(userId, categorySongs);
@@ -79,14 +78,17 @@ async function getSongsBySearch(
       .populate("songUploader")
       .limit(pageSize);
   } else if (searchType === "artist-name") {
-    const totalItems = await Song.countDocuments({
-      songArtist: { $regex: new RegExp(searchWord, "i") },
+    const songs = await Song.find({}).populate("songUploader");
+    searchedSongs = songs.filter((song) => {
+      return (
+        (song.songUploader &&
+          song.songUploader.userNickname &&
+          song.songUploader.userNickname.includes(searchWord)) ||
+        (song.songArtist && song.songArtist.includes(searchWord))
+      );
     });
-    searchedSongs = await Song.find({ songArtist: searchWord })
-      .populate("songUploader")
-      .skip(skip)
-      .limit(pageSize);
-    totalPages = Math.ceil(totalItems / pageSize);
+    totalPages = Math.ceil(searchedSongs.length / pageSize);
+    searchedSongs = searchedSongs.slice(skip, skip + pageSize);
   } else {
     throw createError(400, "path를 형식에 맞게 입력해 주세요.");
   }

@@ -1,5 +1,7 @@
-import React from 'react';
-import { PlaylistRecommendComponent } from '../../components';
+import React from "react";
+import { WeatherPlaylistRecommendationComponent } from "../../components";
+import { GenrePlaylistRecommendationComponent } from "../../components"
+
 
 const playlistInfo = [
   {
@@ -46,11 +48,12 @@ const GenreplaylistInfo = [
   },
 ];
 
+
 export default function FeedPage() {
   return (
     <>
-      <PlaylistRecommendComponent weather="맑은날" playlists={playlistInfo} />
-      <PlaylistRecommendComponent genre="댄스" playlists={GenreplaylistInfo} />
-    </>
+      <WeatherPlaylistRecommendationComponent weather={"맑은날"} playlists={playlistInfo}/>
+      <GenrePlaylistRecommendationComponent Genre={"댄스"} playlists={GenreplaylistInfo}/>
+      </>
   );
 }

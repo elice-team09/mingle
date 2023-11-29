@@ -13,7 +13,7 @@ import {
 import LongButtonComponent from '../LongButtonComponent/LongButtonComponent';
 import { InputComponent } from '../InputComponent';
 import { RecommendGenreComponent } from '../RecommendGenreComponent';
-import { usePostRegister, useGetEmailCheck } from '../../hooks';
+import { usePostRegister } from '../../hooks';
 
 interface SignUpProps {
   initialUserPassword: string;
@@ -39,9 +39,7 @@ export default function SignUpComponent({
   const [passwordError, setPasswordError] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
   const [selectedGenre, setSelectedGenre] = useState<string[]>([]);
-  const [isEmailChekced, setIsEmailChecked] = useState(false);
   const [emailError, setEmailError] = useState('');
-  const [isButtonClicked, setIsButtonClicked] = useState(false);
 
   const validateEmail = (email: string) => {
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -50,24 +48,11 @@ export default function SignUpComponent({
 
   const handleEmailChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const email = e.target.value;
-    setIsButtonClicked(false);
     setUserEmail(email);
     if (!validateEmail(email) && email) {
       setEmailError('올바른 이메일 형식이 아닙니다.');
     } else {
       setEmailError('');
-    }
-  };
-
-  const { data, error, refetch } = useGetEmailCheck(userEmail);
-
-  const handleEmailClick = async () => {
-    setIsButtonClicked(true);
-    try {
-      setIsEmailChecked(true);
-      await refetch();
-    } catch (error) {
-      console.log('Error', error);
     }
   };
 
@@ -79,13 +64,7 @@ export default function SignUpComponent({
   });
   const handleClick = (event: React.FormEvent) => {
     event.preventDefault();
-    if (userEmail === '') alert('이메일을 입력해주세요.');
-    else if (!isEmailChekced || error) alert('이메일 중복 확인을 해주세요.');
-    else if (userPassword === '') alert('비밀번호를 입력해주세요.');
-    else if (verifyPassword === '')
-      alert('비밀번호 재확인이 올바르지 않습니다.');
-    else if (userNickname === '') alert('닉네임을 입력해주세요.');
-    else mutate();
+    mutate();
   };
 
   const togglePasswordVisibility = () => {
@@ -117,28 +96,8 @@ export default function SignUpComponent({
           value={userEmail}
           onChange={handleEmailChange}
         />
-        <button
-          onClick={handleEmailClick}
-          style={{
-            backgroundColor: '#9e9e9e',
-            borderRadius: '5px',
-            padding: '3px',
-            position: 'absolute',
-            top: '42px',
-            right: '10px',
-            color: 'white',
-          }}
-        >
-          중복 확인
-        </button>
-        {data && (
-          <p style={{ textAlign: 'center' }}>사용 가능한 이메일입니다.</p>
-        )}
-        {isButtonClicked && error && (
-          <p style={{ color: 'red', textAlign: 'center' }}>{error.message}</p>
-        )}
       </div>
-
+      {emailError && <p style={{ color: 'red' }}>{emailError}</p>}
       <div style={{ position: 'relative', width: '100%' }}>
         <InputComponent
           id="user-password"
@@ -179,9 +138,6 @@ export default function SignUpComponent({
           onChange={(e) => setUserNickname(e.target.value)}
         />
       </div>
-      {userEmail === '' && (
-        <StyleWarningText>비밀번호가 일치하지 않습니다.</StyleWarningText>
-      )}
       {passwordError && (
         <StyleWarningText>비밀번호가 일치하지 않습니다.</StyleWarningText>
       )}
