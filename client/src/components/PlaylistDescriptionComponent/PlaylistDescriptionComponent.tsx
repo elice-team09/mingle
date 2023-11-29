@@ -1,7 +1,7 @@
-import React, { useState } from 'react'
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faHeart as like } from '@fortawesome/free-solid-svg-icons'
-import { faHeart as noLike } from '@fortawesome/free-regular-svg-icons'
+import React, { useState } from 'react';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faHeart as like } from '@fortawesome/free-solid-svg-icons';
+import { faHeart as noLike } from '@fortawesome/free-regular-svg-icons';
 import {
   StyledDescriptBox,
   StyledTitle,
@@ -12,40 +12,51 @@ import {
   StyledFollow,
   StyledUserImg,
   StyledUserName,
-  StyledButton
-} from './styles'
+  StyledButton,
+} from './styles';
+import {
+  useDeletePlaylistLikeToggle,
+  usePostPlaylistLikeToggle,
+} from '../../hooks';
 
 interface PlayDescript {
-  description: string
-
+  playlistId: string | undefined;
+  description: string | undefined;
 }
 
 interface User {
-  userImg: string
-  userName: string
-  liked: number
+  userImg: string;
+  userName: string | undefined;
+  isUserLiked: boolean | undefined;
+  likeCount: number | undefined;
 }
 
 interface PlayDescriptAndUser extends User, PlayDescript {}
 export default function PlaylistDescriptionComponent({
+  playlistId,
   description,
   userImg,
   userName,
-  liked,
-  
+  isUserLiked,
+  likeCount,
 }: PlayDescriptAndUser) {
-  const [isLike, setIsLike] = useState(false);
+  const [isLike, setIsLike] = useState(isUserLiked);
   const [isExpand, setIsExpand] = useState(false);
-
+  const { mutate: likeToggle } = usePostPlaylistLikeToggle(playlistId);
+  const { mutate: unLikeToggle } = useDeletePlaylistLikeToggle(playlistId);
   const handleClick = () => {
-    setIsLike(!isLike)
-  }
+    setIsLike(!isLike);
+    if (!isLike) likeToggle();
+    else unLikeToggle();
+  };
 
   const handleExpandClick = () => {
-    setIsExpand(!isExpand)
-  }
+    setIsExpand(!isExpand);
+  };
 
-  const OverDescription = isExpand ? description : description.slice(0, 20) + '...';
+  const OverDescription = isExpand
+    ? description
+    : description?.slice(0, 20) + '...';
   return (
     <>
       <StyledDescriptBox>
@@ -65,34 +76,37 @@ export default function PlaylistDescriptionComponent({
                 <FontAwesomeIcon
                   icon={like}
                   color={'#9b59b6'}
-                  cursor='pointer'
+                  cursor="pointer"
                 />
-                <span>{liked}</span>
+                <span>{likeCount}</span>
               </>
             ) : (
               <>
                 <FontAwesomeIcon
                   icon={noLike}
                   color={'#9b59b6'}
-                  cursor='pointer'
+                  cursor="pointer"
                 />
-                <span>{liked}</span>
+                <span>{likeCount}</span>
               </>
             )}
           </StyledHeart>
         </StyledTop>
 
         <StyledTitle>
-        <StyledOverTitle isExpand={isExpand}>{OverDescription}</StyledOverTitle>
-        {description.length > 20  && (
-          <>
-          <br />
-          <StyledButton onClick={handleExpandClick}>{isExpand ? '접기' : '더보기'}</StyledButton>
-          </>
-        )}
-      </StyledTitle>
-
+          <StyledOverTitle isExpand={isExpand}>
+            {OverDescription}
+          </StyledOverTitle>
+          {description && description?.length > 20 && (
+            <>
+              <br />
+              <StyledButton onClick={handleExpandClick}>
+                {isExpand ? '접기' : '더보기'}
+              </StyledButton>
+            </>
+          )}
+        </StyledTitle>
       </StyledDescriptBox>
     </>
-  )
+  );
 }

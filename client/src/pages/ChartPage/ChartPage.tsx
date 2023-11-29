@@ -1,82 +1,55 @@
-import React from "react";
-import { ChartComponent } from "../../components";
+import React from 'react';
+import { ChartComponent } from '../../components';
+import { usePostlikeToggle, useDeleteLikeToggle } from '../../hooks';
+import { useGetSongsByTop } from '../../hooks/useGetSongsByTop';
+import { formatDuration } from '../../utils';
+interface SongData {
+  song: {
+    _id: string;
+    songName: string;
+    songImageName: string;
+    songArtist: string | null;
+    songDuration: number;
+  };
+  isCurrentUserLiked: boolean;
+}
+interface ChartItem {
+  _id: string;
+  title: string;
+  img: string;
+  artist: string;
+  length: string;
+  isLiked: boolean;
+}
 
 export default function ChartPage() {
+  const { data: res, isLoading } = useGetSongsByTop();
+  const { mutate: postLike } = usePostlikeToggle();
+  const { mutate: deleteLike } = useDeleteLikeToggle();
+
+  const handleLikeToggle = async (songId: string, isLiked: boolean) => {
+    const mutation = isLiked ? deleteLike : postLike;
+    await mutation.mutateAsync(songId);
+  };
+
+  if (isLoading) return <div>Loading...</div>;
+
+  const songs: ChartItem[] = res
+    ? res.data.map((item: SongData) => ({
+        _id: item.song._id,
+        title: item.song.songName,
+        img: `http://kdt-sw-6-team09.elicecoding.com/file/songImg/${item.song.songImageLocation}`,
+        artist: item.song.songArtist || 'Unknown Artist',
+        length: formatDuration(item.song.songDuration),
+        isLiked: item.isCurrentUserLiked,
+      }))
+    : [];
+
   return (
     <ChartComponent
-      items={[
-        {
-          title: "Lost Boy",
-          img: "/img/AlbumSample.jpg",
-          artist: "Troye Sivan",
-          length: "03:20",
-          isLiked: true,
-        },
-        {
-          title: "Dangerously",
-          img: "/img/AlbumSample.jpg",
-          artist: "Charlie Puth",
-          length: "03:48",
-          isLiked: false,
-        },
-        {
-          title: "Eyes Closed",
-          img: "/img/AlbumSample.jpg",
-          artist: "Ed Sherren",
-          length: "03:21",
-          isLiked: true,
-        },
-        {
-          title: "Steal The Show",
-          img: "/img/AlbumSample.jpg",
-          artist: "Lauv",
-          length: "03:28",
-          isLiked: false,
-        },
-        {
-          title: "Kill Bill",
-          img: "/img/AlbumSample.jpg",
-          artist: "SZA",
-          length: "03:50",
-          isLiked: false,
-        },
-        {
-          title: "Lost Boy",
-          img: "/img/AlbumSample.jpg",
-          artist: "Troye Sivan",
-          length: "03:20",
-          isLiked: true,
-        },
-        {
-          title: "Dangerously",
-          img: "/img/AlbumSample.jpg",
-          artist: "Charlie Puth",
-          length: "03:48",
-          isLiked: false,
-        },
-        {
-          title: "Eyes Closed",
-          img: "/img/AlbumSample.jpg",
-          artist: "Ed Sherren",
-          length: "03:21",
-          isLiked: true,
-        },
-        {
-          title: "Steal The Show",
-          img: "/img/AlbumSample.jpg",
-          artist: "Lauv",
-          length: "03:28",
-          isLiked: false,
-        },
-        {
-          title: "Kill Bill",
-          img: "/img/AlbumSample.jpg",
-          artist: "SZA",
-          length: "03:50",
-          isLiked: false,
-        },
-      ]}
-      title={"차트"}
+      items={songs}
+      onLikeToggle={handleLikeToggle}
+      title="차트"
     />
   );
 }

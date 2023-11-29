@@ -1,72 +1,54 @@
-import React from "react";
-import { UserInfoComponent, MyPagePlaylists } from "../../components";
+import React from 'react';
+import { 
+  // uploadedSongsState, 
+  useGetPlaylistsByLike, useGetUserInfo, usePutUserDescription, useDeleteSong ,useGetUserPlaylist, useGetUserUploadSong} from '../../hooks';
 
 
-const MYplaylistInfo = [
-  {
-    albumCover: '/img/AlbumSample.jpg',
-    title: '[Playlist] 쌀쌀한 늦가을에 듣기 좋은 팝송 플레이리스트',
-    likes: 111,
-  },
-  {
-    albumCover: '/img/AlbumSample.jpg',
-    title: '[Playlist] 쌀쌀한 늦가을에 듣기 좋은 팝송 플레이리스트',
-    likes: 333,
-  },
-  {
-    albumCover: '/img/AlbumSample.jpg',
-    title: '[Playlist] 쌀쌀한 늦가을에 듣기 좋은 팝송 플레이리스트',
-    likes: 555,
-  },
-  {
-    albumCover: '/img/AlbumSample.jpg',
-    title: '[Playlist] 쌀쌀한 늦가을에 듣기 좋은 팝송 플레이리스트',
-    likes: 777,
-  },
-  {
-    albumCover: '/img/AlbumSample.jpg',
-    title: '[Playlist] 쌀쌀한 늦가을에 듣기 좋은 팝송 플레이리스트',
-    likes: 999,
-  },
-];
-const LikedplaylistInfo = [
-  {
-    albumCover: '/img/AlbumSample.jpg',
-    title: '[Playlist] 쌀쌀한 늦가을에 듣기 좋은 팝송 플레이리스트',
-    likes: 333,
-  },
-  {
-    albumCover: '/img/AlbumSample.jpg',
-    title: '[Playlist] 쌀쌀한 늦가을에 듣기 좋은 팝송 플레이리스트',
-    likes: 333,
-  },
-  {
-    albumCover: '/img/AlbumSample.jpg',
-    title: '[Playlist] 쌀쌀한 늦가을에 듣기 좋은 팝송 플레이리스트',
-    likes: 555,
-  },
-  {
-    albumCover: '/img/AlbumSample.jpg',
-    title: '[Playlist] 쌀쌀한 늦가을에 듣기 좋은 팝송 플레이리스트',
-    likes: 777,
-  },
-];
-
-
+import { UserInfo } from '../../types';
+import { MyInfoComponent, MyPagePlaylists } from '../../components';
+import { useGetUploadedSongs } from '../../hooks/useGetUploadedSongs';
 
 
 export default function Mypage() {
+  const page: number = 1;
+  const pageSize: number = 100;
+  /*추후 페이지네이션 */
+  const { data } = useGetUploadedSongs(page, pageSize);
+  const { mutate } = usePutUserDescription()
+  const { data: userData, isLoading} = useGetUserInfo()
+  const { data: playlist } = useGetUserPlaylist()
+  const { mutate: deleteSong } = useDeleteSong();
+
+  const handleDeleteUploadedSong = async (songId: string) => {
+      await deleteSong(songId);
+  };
+  const { data: likedPlaylist } = useGetPlaylistsByLike();
+  if (isLoading) {
+    return <p>loading...</p>;
+  }
+  const handleUpdateDescription = async (updatedInfo: Partial<UserInfo>) => {
+    mutate(updatedInfo);
+  };
+
+  // 여기서 데이터에 map함수를 적용할지 아니면 훅에서 songs배열을 바로 반환시킬지
+  // 나중에 더 효율 좋은 방식으로 수정할 예정
+  const uploadedPlaylists = data && data.songs ? data.songs : [];
+
+
+
   return (
     <>
-    <UserInfoComponent
-      userImage={"/img/User-Icon.png"}
-      userName={"떼깔룩"}
-      userDescription={"20자 이내로 쓰세요"}
-      postsCount={7}
-      followersCount={7}
-      followingCount={7}
-    />
-    <MyPagePlaylists myplaylists={MYplaylistInfo} likedplaylists={LikedplaylistInfo}/>
+      <MyInfoComponent
+        playlist={playlist??[]}
+        profile={userData?.user}
+        onUpdate={handleUpdateDescription}
+      />
+      <MyPagePlaylists
+        myPlaylists={playlist ?? []}
+        likedPlaylists={likedPlaylist ?? []}
+        myUploadSongslists={uploadedPlaylists ??[]}
+        handleDeleteUploadedSong={handleDeleteUploadedSong}
+      />
     </>
   );
 }

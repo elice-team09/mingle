@@ -1,4 +1,4 @@
-import React, { Dispatch, useState } from 'react';
+import React, { Dispatch, useEffect, useState } from 'react';
 import {
   StyledNextButton,
   StyledNumbers,
@@ -16,16 +16,22 @@ export default function PaginationComponent({
   totalPages,
 }: PaginationComponentProps) {
   const pageLength = totalPages && totalPages <= 5 ? totalPages : 5;
+  const [pageNumbers, setPageNumbers] = useState<number[]>([]);
+  useEffect(() => {
+    if (totalPages && totalPages <= 5) {
+      setPageNumbers(
+        Array.from({ length: totalPages }, (_, index) => index + 1),
+      );
+    } else {
+      setPageNumbers(Array.from({ length: 5 }, (_, index) => 1 + index));
+    }
+  }, [totalPages]);
   const generateConsecutiveNumbers = (start: number, length: number) => {
     if (totalPages && totalPages <= 5) {
-      return Array.from({ length: totalPages }, (_, index) => index + 1);
+      return Array.from({ length }, (_, index) => index + 1);
     }
     return Array.from({ length }, (_, index) => start + index);
   };
-  const [pageNumbers, setPageNumbers] = useState(
-    generateConsecutiveNumbers(1, pageLength),
-  );
-
   const handleNext = (currentPage: number) => {
     setPageNum(currentPage + 1);
     if (currentPage % pageLength === 0) {
@@ -63,9 +69,9 @@ export default function PaginationComponent({
               >
                 <path
                   stroke="currentColor"
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                  stroke-width="2"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth="2"
                   d="M5 1 1 5l4 4"
                 />
               </svg>
@@ -99,9 +105,9 @@ export default function PaginationComponent({
               >
                 <path
                   stroke="currentColor"
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                  stroke-width="2"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth="2"
                   d="m1 9 4-4-4-4"
                 />
               </svg>

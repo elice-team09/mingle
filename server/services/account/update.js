@@ -20,30 +20,41 @@ async function userEdit(userId, jsonValue) {
 				delete jsonValue[data];
 			}
 		});
-		console.log(userId);
-		const userData = await userSchema.findById(userId).lean();
 
-		// 이미지가 jsonValue에 있는 경우에만 처리
 		if (jsonValue.userImage) {
+			// 기존 이미지가 있으면 삭제
+			const timestamp = new Date().getTime();
+			const imageName = `${timestamp}.png`;
 			const decodedImage = Buffer.from(jsonValue.userImage, "base64");
 			const imagePath = path.join(
 				__dirname,
-				`../../upload/profile/${userData.userEmail}.png`
+				`../../upload/profile/${imageName}`
 			);
 			fs.writeFileSync(imagePath, decodedImage);
+
+			// Update userFile field using Mongoose updateOne method
+			await userSchema.updateOne(
+				{ _id: userId },
+				{ $set: { userFile: imageName } }
+			);
 
 			jsonValue.userImage = imagePath;
 		}
 
 		// 비밀번호를 Hmac SHA256 방식으로 암호화한다
-		jsonValue.userPassword = HmacConvert(jsonValue.userPassword);
+		if (jsonValue.userPassword) {
+			jsonValue.userPassword = HmacConvert(jsonValue.userPassword);
+		}
 
 		// 유저 데이터를 업데이트하고 수정된 항목 수를 가져온다
 		const data = await userSchema.updateOne({ _id: userId }, jsonValue);
-
 		// 수정된 항목이 1개인 경우 수정 성공으로 간주하고 true 반환
 		if (data.modifiedCount !== 0) {
-			return { message: "수정이 정상적으로 이루어졌습니다." };
+			const userData = await userSchema
+				.findById(userId)
+				.select("-userPassword")
+				.lean();
+			return { message: "수정이 정상적으로 이루어졌습니다.", userData };
 		} else {
 			// 수정된 항목이 없는 경우 수정 실패로 간주하고 false 반환
 			throw createError(400, "수정할 데이터가 없습니다.");
@@ -52,6 +63,7 @@ async function userEdit(userId, jsonValue) {
 		if (error.code == 11000) {
 			throw createError(409, "이미 존재하는 이메일입니다.");
 		} else {
+			console.log(error);
 			throw createError(400, "수정에 실패했습니다.");
 		}
 	}

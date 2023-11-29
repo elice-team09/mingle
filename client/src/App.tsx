@@ -7,11 +7,9 @@ import {
   ChartPage,
   PlaylistPage,
   RecommendPlaylistPage,
-  UploadModalTestPage,
   Mypage,
   LayoutPage,
   SignUpPage,
-  MyPlaylistPage,
   EditProfilePage,
   LikedSongPage,
   NewSongPage,
@@ -19,7 +17,10 @@ import {
   CompleteSignUpPage,
   CompletePasswordRecoveryPage,
   GenreSongPage,
-  SearchPage,
+  SongDetailsPage,
+  PlaylistSearchPage,
+  SongSearchPage,
+  UserInfoPage,
 } from './pages';
 import PrivateRoute from './PrivateRoute';
 
@@ -49,16 +50,20 @@ function App() {
                 <Route path="/newsong" element={<NewSongPage />}></Route>
                 <Route path="/likedsong" element={<LikedSongPage />}></Route>
                 <Route path="/playlist" element={<PlaylistPage />}></Route>
-                <Route path="/myplaylist" element={<MyPlaylistPage />}></Route>
                 <Route
                   path="/recommendPlaylist"
                   element={<RecommendPlaylistPage />}
                 ></Route>
                 <Route path="/mypage" element={<Mypage />}></Route>
                 <Route path="/edit" element={<EditProfilePage />}></Route>
-                <Route path="/search" element={<SearchPage />}></Route>
+                <Route path="/songsearch" element={<SongSearchPage />}></Route>
+                <Route
+                  path="/playlistsearch"
+                  element={<PlaylistSearchPage />}
+                ></Route>
+                <Route path="/song/:songId" element={<SongDetailsPage />} />
+                <Route path="/user/:userId" element={<UserInfoPage />}></Route>
               </Route>
-              <Route path="/upload" element={<UploadModalTestPage />}></Route>
             </Route>
           </Routes>
         </BrowserRouter>
