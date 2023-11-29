@@ -23,10 +23,6 @@ const userSchema = new mongoose.Schema(
       type: String,
       default: "",
     },
-    userFile: {
-      type: String,
-      default: "",
-    },
     userPreference: {
       type: [String],
       default: [],

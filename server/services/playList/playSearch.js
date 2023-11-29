@@ -27,23 +27,19 @@ const playSearch = async (query, page, pageSize, userId) => {
         });
         return {
           ...playlist._doc,
-          liked: like ? true : false,
+          likedByUser: like ? true : false, 
           likeCount,
         };
       })
     );
 
     const totalPages = Math.ceil(totalPlaylists / pageSize);
-    const currentPage = page * 1;
+
     if (searchPlayListWithLikeInfo.length === 0) {
       return [];
     }
 
-    return {
-      totalPages,
-      currentPage,
-      searchPlayList: searchPlayListWithLikeInfo,
-    };
+    return { totalPages, searchPlayList: searchPlayListWithLikeInfo };
   } catch (error) {
     console.error(error);
     throw error;

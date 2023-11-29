@@ -4,10 +4,10 @@ import { Songs } from '../types';
 import { useAxios } from '../utils';
 
 const getSongsByLike = async (axiosInstance: AxiosInstance, pageNum: number): Promise<Songs> => {
-	const response = await axiosInstance.get(		
+	const response: Songs | PromiseLike<Songs> = await axiosInstance.get(		
         `/api/songs/user-liked?&page=${pageNum}&pageSize=8`
 	);
-	return response.data;
+	return response;
 };
 export function useGetSongsByLike(pageNum: number) {
     const axiosInstance = useAxios();

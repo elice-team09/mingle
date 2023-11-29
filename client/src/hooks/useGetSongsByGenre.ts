@@ -4,10 +4,10 @@ import { Songs } from '../types';
 import { useAxios } from '../utils';
 
 const getSongsByGenre = async (axiosInstance: AxiosInstance, genre: string | undefined, pageNum: number): Promise<Songs> => {
-	const response = await axiosInstance.get(		
+	const response: Songs | PromiseLike<Songs> = await axiosInstance.get(		
         `/api/songs?category=${genre}&page=${pageNum}&pageSize=8`
 	);
-	return response.data;
+	return response;
 };
 export function useGetSongsByGenre(genre: string | undefined, pageNum: number) {
     const axiosInstance = useAxios();

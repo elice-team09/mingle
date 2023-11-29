@@ -1,6 +1,5 @@
 const userSchema = require("../../db/models/userModel");
 const HmacConvert = require("../../utils/commons/passwordConvert");
-const createError = require("http-errors");
 const fs = require("fs");
 const path = require("path");
 
@@ -18,18 +17,18 @@ async function userCreate(jsonValue) {
 //이미지가 있으면 디코딩해서 파일로 저장
     if (jsonValue.userImage) {
       const decodedImage = Buffer.from(jsonValue.userImage, 'base64');
-      const timestamp = new Date().getTime();
-      const imageName = `${timestamp}.png`;
-      const imagePath = path.join(__dirname, `../../upload/profile/${imageName}`);
+      const imagePath = path.join(__dirname, `../../upload/profile/${jsonValue.userEmail}.png`);
       fs.writeFileSync(imagePath, decodedImage);
       jsonValue.userImage = imagePath;
-      jsonValue.userFile = imageName;
     }
 
     await userSchema(jsonValue).save();
-    return {message: "회원가입이 완료되었습니다."}
+    return [true, { message: "가입이 정상적으로 이루어졌습니다." }];
   } catch (error) {
-    throw createError(409, "이미 존재하는 이메일입니다.");
+    console.log(error);
+    if (error.code === 11000) {
+      return [false, { message: "E-mail이 중복되었습니다." }];
+    }
   }
 }
 
