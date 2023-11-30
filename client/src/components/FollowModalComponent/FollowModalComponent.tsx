@@ -38,7 +38,7 @@ export default function FollowModalComponent({
             <StyledModalContent>
                 <StyledModalTitle>follow user</StyledModalTitle>
                 <StyledModalBody>
-                    {usersToShow.map((userFollow) =>(
+                    {usersToShow?.map((userFollow) =>(
                         <StyledListItem>{userFollow}</StyledListItem>
                      ))}
                 </StyledModalBody>

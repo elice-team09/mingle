@@ -42,23 +42,33 @@ export default function MyInfoComponent({
     profile?.userDescription || '20자 이내로 계정 설명을 입력해주세요.',
   );
   const [isModal, setIsModal] = useState(false)
-  const [followType, setFollowType] = useState<"follower" | "following">("followers");
+  const [followType, setFollowType] = useState<"follower" | "following">("follower");
 
   const handleModalOpen = (type: "follower" | "following") => {
-    setIsModalOpen(true);
+    setIsModal(true);
     setFollowType(type);
   };
 
   const { data: followUserData, error} = useGetFollowUser();
+  console.log(followUserData)
   const { data: userData } = useGetUserInfo();
-    console.log(userData.user)
+    console.log(userData?.user)
 
   const handleStatusUpdate = async (updatedText: string) => {
     onUpdate({ userDescription: updatedText });
   };
 
+
+  console.log(userData?.user);
+
+
   const handleFollowClick = () => {
     setIsModal(true);
+    setFollowType('follower')
+  };
+  const handleFollowingClick = () => {
+    setIsModal(true);
+    setFollowType('following')
   };
 
   const handleModalClose = (e) => {
@@ -125,19 +135,25 @@ export default function MyInfoComponent({
           >
             <p>팔로워 </p>
             <span>{profile.userFollower.length} </span>
+            {isModal && ( 
+            <div onClick={handleModalClose}>
+              <FollowModalComponent 
+              onClose={handleModalClose}
+              userFollower={userData?.user.userFollower || []}
+          />
+            </div>)}
             {isModal && ( <div onClick={handleModalClose}><FollowModalComponent onClick={handleModalClose}/></div>)}
           </StyledFollower>
           <StyledFollowing 
-          onClick={handleFollowClick}
+          onClick={handleFollowingClick}
           >
             <p>팔로잉</p>
             <span>{profile.userFollow.length}</span>
             {isModal && ( 
             <div onClick={handleModalClose}>
               <FollowModalComponent 
-              onClick={handleModalClose}
+              onClose={handleModalClose}
               userFollow={userData?.user.userFollow || []}
-              userFollower={userData?.user.userFollower || []}
           />
             </div>)}
           </StyledFollowing>
