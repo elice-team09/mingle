@@ -59,6 +59,8 @@ export default function MyInfoComponent({
   };
 
 
+  const userNickname = followUserData[0]?.userNickname
+
   console.log(userData?.user);
 
 
@@ -140,6 +142,7 @@ export default function MyInfoComponent({
               <FollowModalComponent 
               onClose={handleModalClose}
               userFollower={userData?.user.userFollower || []}
+              userNickname={userNickname}
           />
             </div>)}
             {isModal && ( <div onClick={handleModalClose}><FollowModalComponent onClick={handleModalClose}/></div>)}
@@ -154,6 +157,7 @@ export default function MyInfoComponent({
               <FollowModalComponent 
               onClose={handleModalClose}
               userFollow={userData?.user.userFollow || []}
+              userNickname={userNickname}
           />
             </div>)}
           </StyledFollowing>
