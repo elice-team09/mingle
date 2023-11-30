@@ -92,6 +92,7 @@ export const StyledFollower = styled.div`
 ${tw`
     p-4
     flex
+    cursor-pointer
     `}
     p{
         margin-right: 4px;
@@ -104,6 +105,7 @@ export const StyledFollowing = styled.div`
 ${tw`
     p-4
     flex
+    cursor-pointer
     `}
     p{
         margin-right: 4px;

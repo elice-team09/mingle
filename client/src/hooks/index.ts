@@ -32,3 +32,4 @@ export * from "./useDeletePlaylistLikeToggle";
 export * from "./useGetPlaylistsByFollow";
 export* from "./useGetUserPlaylist";
 
+export * from "./useGetFollowUser"
