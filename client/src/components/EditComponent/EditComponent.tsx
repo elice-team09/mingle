@@ -33,6 +33,7 @@ export default function EditComponent({
   const [selectedGenre, setSelectedGenre] = useState<string[]>(
     profile?.userPreference || [],
   );
+  const [userPasswordConfirmation, setUserPasswordConfirmation] = useState('');
   const [userPassword, setUserPassword] = useState(profile?.userPassword || '');
   const [userNickname, setUserNickname] = useState(profile?.userNickname);
 
@@ -52,10 +53,23 @@ export default function EditComponent({
       userNickname: userNickname!,
       userPreference: selectedGenre,
     };
-    if (onUpdate) {
-      onUpdate(updatedInfo);
-      navigate('/');
+    if (!userPassword && !userPasswordConfirmation) {
+      alert('비밀번호를 입력하지 않았습니다.');
+      return; 
     }
+    if (userPassword !== userPasswordConfirmation) {
+      alert('비밀번호가 일치하지 않습니다.');
+      return; 
+    }
+    try {
+      if (onUpdate) {
+        onUpdate(updatedInfo);
+        navigate('/');
+      }
+    } catch (error) {
+      alert(`업데이트에 실패했습니다`);
+    }
+  
   };
   return (
     <>
@@ -84,6 +98,7 @@ export default function EditComponent({
           label="비밀번호 재확인"
           type={showPassword ? 'text' : 'password'}
           placeholder="비밀번호를 재입력하세요"
+          onChange={(e) => setUserPasswordConfirmation(e.target.value)}
         />
         <StylePasswordToggleIcon
           src="./img/view-password.png"
