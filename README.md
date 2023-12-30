@@ -8,19 +8,25 @@
 
 ## 팀원 소개
 
-| 이름   | 역할             | 링크                                    |
-| ------ | ---------------- | --------------------------------------- |
-| 윤보영 | 팀장, 프론트엔드 | [깃허브](https://github.com/BoyoungYun) |
-| 김남현 | 프론트엔드       | [깃허브](https://github.com/NamhyunK) |
-| 손영진 | 프론트엔드       |  [깃허브](https://github.com/sonprogrammer)  |
-| 소유빈 | 백엔드           | [깃허브](https://github.com/kanujoa)    |
-| 임종승 | 백엔드           |   [깃허브](https://github.com/limjongseung)                                      |
+| 이름   | 역할             | 링크                                                                                                                                                                                                                                                                                                                                         |
+| ------ | ---------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| 윤보영 | 팀장, 프론트엔드 | [깃허브](https://github.com/BoyoungYun)                                                                                                                                                                                                                                                                                                      |
+| 김남현 | 프론트엔드       | [깃허브](https://github.com/NamhyunK)                                                                                                                                                                                                                                                                                                        |
+| 손영진 | 프론트엔드       | [깃허브](https://github.com/sonprogrammer)                                                                                                                                                                                                                                                                                                   |
+| 소유빈 | 백엔드           | [깃허브](https://github.com/kanujoa), [블로그](https://developingdiaryoflily.tistory.com/category/%ED%94%84%EB%A1%9C%EC%A0%9D%ED%8A%B8/%EC%97%98%EB%A6%AC%EC%8A%A4%202%EC%B0%A8%20%ED%94%84%EB%A1%9C%EC%A0%9D%ED%8A%B8%20%ED%94%8C%EB%A0%88%EC%9D%B4%EB%A6%AC%EC%8A%A4%ED%8A%B8%20%EA%B3%B5%EC%9C%A0%20%EC%82%AC%EC%9D%B4%ED%8A%B8%20Mingle) |
+| 임종승 | 백엔드           | [깃허브](https://github.com/limjongseung)                                                                                                                                                                                                                                                                                                    |
 
 ## 기술 스택
 
 ### Frontend
 
 <img src="https://img.shields.io/badge/React-61DAFB?style=for-the-badge&logo=React&logoColor=black">
+<img src="https://img.shields.io/badge/Typescript-3178C6?style=for-the-badge&logo=Typescript&logoColor=white">
+<img src="https://img.shields.io/badge/Recoil-3578E5?style=for-the-badge&logo=Recoil&logoColor=white">
+<img src="https://img.shields.io/badge/Axios-5A29E4?style=for-the-badge&logo=Axios&logoColor=white">
+<img src="https://img.shields.io/badge/Vite-646CFF?style=for-the-badge&logo=Vite&logoColor=white">
+<img src="https://img.shields.io/badge/Tailwind-06B6D4?style=for-the-badge&logo=TailwindCSS&logoColor=white">
+<img src="https://img.shields.io/badge/styled components-DB7093?style=for-the-badge&logo=styled-components&logoColor=white">
 
 ### Backend
 
@@ -135,6 +141,7 @@
   - 팔로우 실시간 반영되도록 수정
 
 #### 김남현
+
 - 회원 기능
   - 이메일, 비밀번호 유효성 검사 기능
   - 비밀번호 찾기 기능
@@ -149,6 +156,7 @@
 - 유저 관련 기능
   - 곡 상세페이지에서 업로드 유저 정보 상세페이지 이동 기능
   - 유저 팔로우, 언팔로우 기능
+
 #### 손영진
 
 ---
